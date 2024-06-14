@@ -7,14 +7,36 @@ IIFE module pattern
 
 const game = (function(){
     const gameBoard = (function(){  //Complete game will only have one gameBoard
-        const board = [
-            0,0,0,
-            0,0,0,
-            0,0,0,
-        ];
+        const board = [];
         const getMark = (index) => board[index];
         const setMark = (index,mark) => board[index-1] = mark;
-        return {getMark, setMark}      
+        const checkGame = () =>{
+            /*
+            0,1,2,
+            3,4,5,
+            6,7,8,
+            */
+            if(board[0]===board[1] && board[1]===board[2]){         //horizontal 1
+                return board[0];
+            } else if(board[3]===board[4] && board[4]===board[5]){  //second horizontal
+                return board[3];
+            } else if(board[6]===board[7] && board[7]===board[8]){  //third horizontal
+                return board[6];
+            } else if(board[0]===board[3] && board[3]===board[6]){  //first vertical
+                return board[0];
+            } else if(board[1]===board[4] && board[4]===board[7]){  //second vertical
+                return board[1];
+            } else if(board[2]===board[5] && board[5]===board[8]){  //third vertical
+                return board[2];
+            } else if(board[0]===board[4] && board[4]===board[8]){  //first diagonal
+                return board[0];
+            } else if(board[2]===board[4] && board[4]===board[6]){  //second diagonal
+                return board[2];
+            } else {
+                return 'draw'
+            }
+        }
+        return {getMark, setMark, checkGame}
     })()
     
     function Player(name,mark){
@@ -29,8 +51,6 @@ const game = (function(){
         }
         console.log(`player one: ${playerOne.name} and player two:${playerTwo.name}`);
         //make a loop that let players play their turns and check the win condition simultaneously
-        gameBoard.setMark(5,playerOne.mark);        //Temporary line
-        gameBoard.setMark(9,playerTwo.mark);        //Temporary line
     }
 
     function displayBoardConsole(){
