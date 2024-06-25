@@ -9,7 +9,7 @@ const game = (function(){
     const gameBoard = (function(){  //Complete game will only have one gameBoard
         const board = [];
         const getMark = (index) => board[index];
-        const setMark = (index,mark) => board[index-1] = mark;
+        const setMark = (index,mark) => board[index] = mark;
         const checkGame = () =>{
             /*
             0,1,2,
