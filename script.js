@@ -3,6 +3,15 @@ Goal: No code in global scope
 Using Vanilla javaScript:
 Factory Functions
 IIFE module pattern
+
+
+Game starts
+board is empty
+player 1 takes turn $ loop1
+player 2 takes turn $ loop1
+$ check if any match-3-line happens (while board might be partially empty)
+players fill up the board
+either a player win or a draw happens
 */
 
 const game = (function(){
@@ -51,6 +60,30 @@ const game = (function(){
         }
         console.log(`player one: ${playerOne.name} and player two:${playerTwo.name}`);
         //make a loop that let players play their turns and check the win condition simultaneously
+
+        let playerOneTurn = true;
+        //console.log(!gameBoard.checkGame());            //this is giving undefined
+        while(!gameBoard.checkGame()){         //added false to stop the infinite loop
+            if(playerOneTurn){
+                let indx = prompt("Enter index")
+                playTurn(playerOne,indx);
+                playerOneTurn = false;
+            } else {
+                let indx = prompt("Enter index")
+                playTurn(playerTwo,indx);
+                playerOneTurn = true;
+            }
+            //console.log("Check game: "+gameBoard.checkGame());
+        }
+    }
+
+    function playTurn(player,index){
+        if(gameBoard.getMark(index) == undefined){
+            gameBoard.setMark(index,player.mark);
+        }else {
+            console.log("Not Allowed")
+        }
+        displayBoardConsole()
     }
 
     function displayBoardConsole(){
@@ -62,8 +95,8 @@ const game = (function(){
     function start(){
         const playerOne = Player('First','O');
         const playerTwo = Player('Second','X');
-        playRound(playerOne,playerTwo);
         displayBoardConsole();
+        playRound(playerOne,playerTwo);
     }
 
     return {start}
