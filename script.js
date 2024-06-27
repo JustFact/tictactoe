@@ -41,7 +41,7 @@ const game = (function(){
                 return board[0];
             } else if(board[2]===board[4] && board[4]===board[6]){  //second diagonal
                 return board[2];
-            } else {
+            } else if(board.length === 9 && !board.includes(undefined)){
                 return 'draw'
             }
         }
@@ -73,7 +73,7 @@ const game = (function(){
                 playTurn(playerTwo,indx);
                 playerOneTurn = true;
             }
-            //console.log("Check game: "+gameBoard.checkGame());
+            console.log("Check game: "+gameBoard.checkGame());
         }
     }
 
