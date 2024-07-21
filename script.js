@@ -62,19 +62,28 @@ const game = (function(){
         //make a loop that let players play their turns and check the win condition simultaneously
 
         let playerOneTurn = true;
-        //console.log(!gameBoard.checkGame());            //this is giving undefined
-        while(!gameBoard.checkGame()){         //added false to stop the infinite loop
-            if(playerOneTurn){
-                let indx = prompt("Enter index")
-                playTurn(playerOne,indx);
-                playerOneTurn = false;
-            } else {
-                let indx = prompt("Enter index")
-                playTurn(playerTwo,indx);
-                playerOneTurn = true;
+        const playerInput = document.querySelector("#playerInput")
+        const submitButton = document.querySelector("#submitButton")
+
+        submitButton.addEventListener('click',(e)=>{
+            e.preventDefault();
+            inputIndex = Number.parseInt(playerInput.value);
+            playerInput.value = '';
+            if(!gameBoard.checkGame()){
+                if(playerOneTurn){
+                    let indx = inputIndex;
+                    playTurn(playerOne,indx);
+                    playerOneTurn = false;
+                } else {
+                    let indx = inputIndex;
+                    playTurn(playerTwo,indx);
+                    playerOneTurn = true;
+                }
+                console.log("Check game: "+gameBoard.checkGame());
+            }else {
+                //game ended?
             }
-            console.log("Check game: "+gameBoard.checkGame());
-        }
+        })
     }
 
     function playTurn(player,index){
