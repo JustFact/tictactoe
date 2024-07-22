@@ -80,8 +80,9 @@ const game = (function(){
                     playerOneTurn = true;
                 }
                 console.log("Check game: "+gameBoard.checkGame());
-            }else {
-                //game ended?
+                if(gameBoard.checkGame() != undefined){
+                    console.log('The game has ended')
+                }
             }
         })
     }
