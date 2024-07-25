@@ -4,14 +4,6 @@ Using Vanilla javaScript:
 Factory Functions
 IIFE module pattern
 
-
-Game starts
-board is empty
-player 1 takes turn $ loop1
-player 2 takes turn $ loop1
-$ check if any match-3-line happens (while board might be partially empty)
-players fill up the board
-either a player win or a draw happens
 */
 
 const game = (function(){
@@ -41,7 +33,7 @@ const game = (function(){
                 return board[0];
             } else if(board[2]===board[4] && board[4]===board[6]){  //second diagonal
                 return board[2];
-            } else if(board.length === 9 && !board.includes(undefined)){
+            } else if(board.length === 9 && !board.includes('')){
                 return 'draw'
             }
         }
@@ -49,13 +41,17 @@ const game = (function(){
     })()
     
     const display = (function(){
-        //Make a display controllers
         const cells = document.querySelectorAll(".cell");
         const update = () => {
             for(let i = 0; i<9; i++){
                 cells[i].innerText = gameBoard.getMark(i);
             }
         }
+        /*
+        Running the function for first time
+        when page loads and update the grid
+        */
+        update();
         return {update}
     })();
 
@@ -65,39 +61,29 @@ const game = (function(){
     }
 
     function playRound(playerOne,playerTwo){
-        if(!playerOne.name && !playerTwo.name){
-            playerOne.name = prompt("Player one name");
-            playerTwo.name = prompt("Player two name");
-        }
-        console.log(`player one: ${playerOne.name} and player two:${playerTwo.name}`);
-        //make a loop that let players play their turns and check the win condition simultaneously
-
+        const cells = document.querySelectorAll('.cell');
         let playerOneTurn = true;
-        const playerInput = document.querySelector("#playerInput")
-        const submitButton = document.querySelector("#submitButton")
-
-        submitButton.addEventListener('click',(e)=>{
-            e.preventDefault();
-            inputIndex = Number.parseInt(playerInput.value);
-            playerInput.value = '';
-            if(!gameBoard.checkGame()){
-                if(playerOneTurn){
-                    let indx = inputIndex;
-                    playTurn(playerOne,indx);
-                    playerOneTurn = false;
-                    display.update()
-                } else {
-                    let indx = inputIndex;
-                    playTurn(playerTwo,indx);
-                    playerOneTurn = true;
-                    display.update();
+        for(cell of cells){
+            cell.addEventListener('click', (e)=>{
+                if(!gameBoard.checkGame()){
+                    if(playerOneTurn){
+                        let indx = e.target.dataset.index;
+                        playTurn(playerOne,indx);
+                        playerOneTurn = false;
+                        display.update()
+                    } else {
+                        let indx = e.target.dataset.index;
+                        playTurn(playerTwo,indx);
+                        playerOneTurn = true;
+                        display.update();
+                    }
+                    console.log("Check winner: "+gameBoard.checkGame());
+                    if(gameBoard.checkGame() != ''){
+                        console.log('Game Over')
+                    }
                 }
-                console.log("Check game: "+gameBoard.checkGame());
-                if(gameBoard.checkGame() != ''){
-                    console.log('Game Over')
-                }
-            }
-        })
+            })
+        }
     }
 
     function playTurn(player,index){
@@ -116,7 +102,7 @@ const game = (function(){
     }
 
     function start(){
-        display.update();
+        // display.update();
         const playerOne = Player('First','O');
         const playerTwo = Player('Second','X');
         displayBoardConsole();
