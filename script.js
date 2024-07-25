@@ -16,7 +16,7 @@ either a player win or a draw happens
 
 const game = (function(){
     const gameBoard = (function(){  //Complete game will only have one gameBoard
-        const board = [];
+        const board = ['','','','','','','','',''];
         const getMark = (index) => board[index];
         const setMark = (index,mark) => board[index] = mark;
         const checkGame = () =>{
@@ -48,6 +48,17 @@ const game = (function(){
         return {getMark, setMark, checkGame}
     })()
     
+    const display = (function(){
+        //Make a display controllers
+        const cells = document.querySelectorAll(".cell");
+        const update = () => {
+            for(let i = 0; i<9; i++){
+                cells[i].innerText = gameBoard.getMark(i);
+            }
+        }
+        return {update}
+    })();
+
     function Player(name,mark){
         this.mark = mark;
         return {name,mark}
@@ -74,21 +85,23 @@ const game = (function(){
                     let indx = inputIndex;
                     playTurn(playerOne,indx);
                     playerOneTurn = false;
+                    display.update()
                 } else {
                     let indx = inputIndex;
                     playTurn(playerTwo,indx);
                     playerOneTurn = true;
+                    display.update();
                 }
                 console.log("Check game: "+gameBoard.checkGame());
-                if(gameBoard.checkGame() != undefined){
-                    console.log('The game has ended')
+                if(gameBoard.checkGame() != ''){
+                    console.log('Game Over')
                 }
             }
         })
     }
 
     function playTurn(player,index){
-        if(gameBoard.getMark(index) == undefined){
+        if(gameBoard.getMark(index) == ''){
             gameBoard.setMark(index,player.mark);
         }else {
             console.log("Not Allowed")
@@ -103,6 +116,7 @@ const game = (function(){
     }
 
     function start(){
+        display.update();
         const playerOne = Player('First','O');
         const playerTwo = Player('Second','X');
         displayBoardConsole();
